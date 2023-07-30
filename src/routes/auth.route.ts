@@ -4,18 +4,14 @@ import bcrypt from "bcrypt";
 
 const authRouter = express.Router();
 
-// login
-authRouter.get("/login", async (req, res, next) => {
-  res.send("Please Login");
-});
-
-authRouter.post("/login", async (req, res, next) => {
-  res.send("Please Login");
-});
-
-// register
+// register view
 authRouter.get("/register", async (req, res, next) => {
   res.send("Please register");
+});
+
+// login view
+authRouter.get("/login", async (req, res, next) => {
+  res.send("Please Login");
 });
 
 // registered new user
@@ -38,6 +34,28 @@ authRouter.post("/register", async (req, res, next) => {
     res.send(
       `${req.body.userType} is not a valid role. "admin", "vendor" and "consumer" are the valid role`
     );
+  }
+});
+
+// login
+authRouter.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const userInDb = await User.findOne({
+      email: email,
+    });
+    if (!userInDb) {
+      return res.send({ error: "Invalid credentials" });
+    }
+    const passwordMatch = await bcrypt.compare(password, userInDb.password);
+    if (!passwordMatch) {
+      return res.send("email or password is incorrect");
+    } else {
+      res.send("logged in");
+    }
+  } catch (err) {
+    console.log(err);
+    res.send("Something went wrong. Please try after sometime");
   }
 });
 
