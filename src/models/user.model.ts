@@ -7,8 +7,8 @@ const UserSchema = new mongoose.Schema({
   userType: {
     type: String,
     required: true,
-    enum: ["admin", "vendor", "consumer"],
     lowercase: true,
+    enum: ["admin", "vendor", "consumer"],
   },
   password: { type: String, require: true },
 });

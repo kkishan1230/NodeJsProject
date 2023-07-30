@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/user.model";
+import bcrypt from "bcrypt";
 
 const authRouter = express.Router();
 
@@ -17,29 +18,27 @@ authRouter.get("/register", async (req, res, next) => {
   res.send("Please register");
 });
 
+// registered new user
 authRouter.post("/register", async (req, res, next) => {
   try {
     const userData = req.body;
     const doesExist = await User.findOne({ email: userData.email });
     if (doesExist) {
-      res.send("User Exists");
+      res.send("User already Exists");
       return;
     }
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
 
-    const user = new User(req.body);
-    console.log(user);
+    const user = new User(userData);
     await user.save();
     res.send(user);
   } catch (err) {
+    console.log(err);
     res.send(
-      `${req.body.userType} is not a valid role. "Admin", "Vendor" and "Consumer" are the valid role`
+      `${req.body.userType} is not a valid role. "admin", "vendor" and "consumer" are the valid role`
     );
   }
-});
-
-// logout
-authRouter.get("/logout", async (req, res, next) => {
-  res.send("You are logged out");
 });
 
 export default authRouter;
