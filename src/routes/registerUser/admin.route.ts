@@ -22,7 +22,6 @@ authRouter.post("/register/admin", async (req, res, next) => {
       return;
     }
     const user = new User(req.body);
-    console.log(user);
     await user.save();
     res.send(user);
   } catch (error) {
