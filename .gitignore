@@ -1,0 +1,10 @@
+# Node.js
+node_modules/
+package-lock.json
+
+# Output of 'npm run build' or 'yarn build'
+dist/
+build/
+
+# dotenv environment variables file
+.env
