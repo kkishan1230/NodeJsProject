@@ -41,7 +41,7 @@ authRouter.post("/register", async (req, res, next) => {
 
     if (userData?.userType === "admin" && process.env.SECRET_KEY_Admin) {
       const token = jwt.sign({ userData }, process.env.SECRET_KEY_Admin, {
-        expiresIn: "2h",
+        expiresIn: "2h"
       });
       const user = new User(userData);
       await user.save();
@@ -63,7 +63,7 @@ authRouter.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userInDb: UserData | null = await User.findOne({
-      email: email,
+      email: email
     });
 
     if (userInDb && process.env.SECRET_KEY_Admin) {
@@ -98,7 +98,7 @@ authRouter.post("/login", async (req, res, next) => {
 
     if (userInDb?.userType === "vendor" && SECRET_KEY_Vendor) {
       const token = jwt.sign({ userInDb }, SECRET_KEY_Vendor, {
-        expiresIn: "1h",
+        expiresIn: "1h"
       });
       return res.send(token);
     }
@@ -109,6 +109,16 @@ authRouter.post("/login", async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.send("Something went wrong. Please try after sometime");
+  }
+});
+
+// userlogin test
+authRouter.post("/userlogin", async (req, res) => {
+  const userData = req.body;
+  if (userData.userName && userData.password) {
+    return res.send({ message: "kishan" });
+  } else {
+    return res.send("userName or password is missing");
   }
 });
 
