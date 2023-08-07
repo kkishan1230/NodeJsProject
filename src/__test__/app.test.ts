@@ -1,9 +1,8 @@
 import request from "supertest";
-import app from "../app";
 
 describe("POST /userlogin", () => {
   test("should respond with 'kishan'", async () => {
-    const respFromServer = await request("http://localhost:60275")
+    const respFromServer = await request("http://localhost:3000")
       .post("/auth/userlogin")
       .send({
         userName: "kishan",

@@ -9,7 +9,6 @@ import morgan from "morgan";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
 const mongoDbUri = "mongodb://127.0.0.1:27017/Users";
 
 const app = express();
@@ -20,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 connect(mongoDbUri)
   .then(() => {
     console.log("connected to database");
-    app.listen(60275, () => {
+    app.listen(3000, () => {
       console.log("server Connected on port 3000");
     });
   })
